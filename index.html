@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A Surprise For You 💗</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="1">
+<div id="bg"></div>
+<button id="music" aria-label="Toggle music">🎵</button>
+
+<main class="page on c" id="p1">
+  <div class="big">💗</div>
+  <h1 id="q">READY FOR UR SURPRISEEEEEE BBY GIRL? 🥺💗</h1>
+  <div id="btns">
+    <button class="btn" id="yes">YESSS 💗</button>
+    <button class="btn no" id="no">NO 😏</button>
+  </div>
+</main>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+<script>
+/* ---------- PAGE 1 ---------- */
+const q=$('q'), yes=$('yes'), no=$('no');
+yes.onclick = e => {
+  state.yes++; save(); burst(e.clientX||innerWidth/2, e.clientY||innerHeight/2, 8);
+  if(state.yes<=2){ q.textContent = YES_TEXTS[state.yes-1]; jump(yes); yes.classList.add('pulse'); }   // cheeky: hops away after each click
+  else go(2);
+};
+function dodge(e){
+  e.preventDefault(); state.noMoves++; save(); jump(no);
+  if(state.noMoves>=20){                                  // ~20 playful moves, then the question changes
+    state.noMoves=0; state.noStage=Math.min(state.noStage+1,3);
+    q.textContent = NO_TEXTS[state.noStage-1];
+    yes.style.setProperty('--g', 1+state.noStage*.18); save();    // YES gets a bit bigger each time 😏
+  }
+}
+['mouseenter','touchstart','click'].forEach(ev => no.addEventListener(ev, dodge, {passive:false}));
+
+
+if(state.noStage){ q.textContent = NO_TEXTS[state.noStage-1]; yes.style.setProperty('--g', 1+state.noStage*.18); }
+
+</script>
+</body>
+</html>
